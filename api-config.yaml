@@ -1,0 +1,17 @@
+projectName: uhub-sapi1
+assetVersion: "1.0.0"
+apiVersion: "1.0"
+apiType: raml 
+isProxy: false
+deploymentType: cloudhub
+policies:
+- client-id-enforcement
+- rate-limiting
+alerts:
+- {name: RequestCounter, severity: Info, type: request-count, operator: gt, threshold: "10", period: "1", duration: "10", durationUnit: days, recipient: akshayvankudre16}
+environment: DEV
+organizationName: UHIS
+credentials:
+    userName: akshayvankudre16
+    password: Akki123@123
+    
