@@ -1,0 +1,388 @@
+#%RAML 1.0 Library
+usage: uhub sapi datatypes library
+types:
+  register-covid-case-request:
+    type: object
+    properties:
+          source:
+            type: string
+            required: true
+            minLength: 1
+            maxLength: 60
+            example: "Hospital1"
+          caseType:
+            type: string
+            required: true
+            minLength: 1
+            maxLength: 10
+            example: "Positive"
+          firstName:
+            type: string
+            required: true
+            minLength: 1
+            maxLength: 30
+            example: "Akshay"
+          lastName:
+            type: string
+            required: true
+            minLength: 1
+            maxLength: 30
+            example: "Jain"
+          phone:
+            type: string
+            required: true
+            minLength: 1
+            maxLength: 15
+            example: "7892947761"
+          email:
+            type: string
+            required: false
+            minLength: 1
+            maxLength: 30
+            example: "akshay1@gmail.com"
+          dateOfBirth:
+            type: string
+            required: true
+            example: "1991-02-21"
+          nationalId:
+            type: string
+            required: true
+            minLength: 1
+            maxLength: 20
+            example: "542684416661"
+          nationalIdType:
+            type: string
+            required: true
+            minLength: 1
+            maxLength: 30
+            example: "Aadhar"
+          address:
+            type: object
+            properties:
+              streetAddress:
+                type: string
+                required: true
+                minLength: 1
+                maxLength: 50
+                example: "Miyapur1"
+              city:
+                type: string
+                required: true
+                minLength: 1
+                maxLength: 30
+                example: "Hyd"
+              state:
+                type: string
+                required: true
+                minLength: 1
+                maxLength: 30
+                example: "Tel"
+              postal:
+                type: string
+                required: true
+                minLength: 1
+                maxLength: 30
+                example: "500041"
+              country:
+                type: string
+                required: true
+                minLength: 1
+                maxLength: 30
+                example: "India"
+  register-covid-case-response:
+    type: object
+    properties:
+      caseId:
+        type: string
+        required: true
+        example: "1"
+  update-covid-case-request:
+    type: object
+    xml:
+          name: covidCase
+    properties:
+          caseId:
+            type: string
+            required: true
+            example: "1"
+          source:
+            type: string
+            required: true
+            minLength: 1
+            maxLength: 60
+            example: "Hospital1"
+          caseType:
+            type: string
+            required: true
+            minLength: 1
+            maxLength: 10
+            example: "Positive"
+          firstName:
+            type: string
+            required: true
+            minLength: 1
+            maxLength: 30
+            example: "Akshay"
+          lastName:
+            type: string
+            required: true
+            minLength: 1
+            maxLength: 30
+            example: "Jain"
+          phone:
+            type: string
+            required: true
+            minLength: 1
+            maxLength: 15
+            example: "7892947761"
+          email:
+            type: string
+            required: false
+            minLength: 1
+            maxLength: 30
+            example: "akshay1@gmail.com"
+          dateOfBirth:
+            type: string
+            required: true
+            example: "1991-02-21"
+          nationalId:
+            type: string
+            required: true
+            minLength: 1
+            maxLength: 20
+            example: "542684416661"
+          nationalIdType:
+            type: string
+            required: true
+            minLength: 1
+            maxLength: 30
+            example: "Aadhar"
+          address:
+            type: object
+            properties:
+              streetAddress:
+                type: string
+                required: true
+                minLength: 1
+                maxLength: 50
+                example: "Miyapur1"
+              city:
+                type: string
+                required: true
+                minLength: 1
+                maxLength: 30
+                example: "Hyd"
+              state:
+                type: string
+                required: true
+                minLength: 1
+                maxLength: 30
+                example: "Tel"
+              postal:
+                type: string
+                required: true
+                minLength: 1
+                maxLength: 30
+                example: "500041"
+              country:
+                type: string
+                required: true
+                minLength: 1
+                maxLength: 30
+                example: "India"
+  update-covid-case-response:
+    type: object
+    xml:
+              name: response
+    properties:
+              caseId:
+                type: string
+                required: true
+                example: "1"
+  get-covid-case-by-national-id-response:
+    type: array
+    items:
+                type: object
+                properties:
+                  source:
+                    type: string
+                    required: true
+                    minLength: 1
+                    maxLength: 60
+                    example: "Hospital1"
+                  caseType:
+                    type: string
+                    required: true
+                    minLength: 1
+                    maxLength: 10
+                    example: "Positive"
+                  firstName:
+                    type: string
+                    required: true
+                    minLength: 1
+                    maxLength: 30
+                    example: "Akshay"
+                  lastName:
+                    type: string
+                    required: true
+                    minLength: 1
+                    maxLength: 30
+                    example: "Jain"
+                  phone:
+                    type: string
+                    required: true
+                    minLength: 1
+                    maxLength: 15
+                    example: "7892947761"
+                  email:
+                    type: string
+                    required: false
+                    minLength: 1
+                    maxLength: 30
+                    example: "akshay1@gmail.com"
+                  dateOfBirth:
+                    type: string
+                    required: true
+                    example: "1991-02-21"
+                  nationalId:
+                    type: string
+                    required: true
+                    minLength: 1
+                    maxLength: 20
+                    example: "542684416661"
+                  nationalIdType:
+                    type: string
+                    required: true
+                    minLength: 1
+                    maxLength: 30
+                    example: "Aadhar"
+                  address:
+                    type: object
+                    properties:
+                      streetAddress:
+                        type: string
+                        required: true
+                        minLength: 1
+                        maxLength: 50
+                        example: "Miyapur1"
+                      city:
+                        type: string
+                        required: true
+                        minLength: 1
+                        maxLength: 30
+                        example: "Hyd"
+                      state:
+                        type: string
+                        required: true
+                        minLength: 1
+                        maxLength: 30
+                        example: "Tel"
+                      postal:
+                        type: string
+                        required: true
+                        minLength: 1
+                        maxLength: 30
+                        example: "500041"
+                      country:
+                        type: string
+                        required: true
+                        minLength: 1
+                        maxLength: 30
+                        example: "India"
+  get-covid-reports-response:
+    type: array
+    items:
+                type: object
+                properties:
+                  source:
+                    type: string
+                    required: true
+                    minLength: 1
+                    maxLength: 60
+                    example: "Hospital1"
+                  caseType:
+                    type: string
+                    required: true
+                    minLength: 1
+                    maxLength: 10
+                    example: "Positive"
+                  firstName:
+                    type: string
+                    required: true
+                    minLength: 1
+                    maxLength: 30
+                    example: "Akshay"
+                  lastName:
+                    type: string
+                    required: true
+                    minLength: 1
+                    maxLength: 30
+                    example: "Jain"
+                  phone:
+                    type: string
+                    required: true
+                    minLength: 1
+                    maxLength: 15
+                    example: "7892947761"
+                  email:
+                    type: string
+                    required: false
+                    minLength: 1
+                    maxLength: 30
+                    example: "akshay1@gmail.com"
+                  dateOfBirth:
+                    type: string
+                    required: true
+                    example: "1991-02-21"
+                  nationalId:
+                    type: string
+                    required: true
+                    minLength: 1
+                    maxLength: 20
+                    example: "542684416661"
+                  nationalIdType:
+                    type: string
+                    required: true
+                    minLength: 1
+                    maxLength: 30
+                    example: "Aadhar"
+                  address:
+                    type: object
+                    properties:
+                      streetAddress:
+                        type: string
+                        required: true
+                        minLength: 1
+                        maxLength: 50
+                        example: "Miyapur1"
+                      city:
+                        type: string
+                        required: true
+                        minLength: 1
+                        maxLength: 30
+                        example: "Hyd"
+                      state:
+                        type: string
+                        required: true
+                        minLength: 1
+                        maxLength: 30
+                        example: "Tel"
+                      postal:
+                        type: string
+                        required: true
+                        minLength: 1
+                        maxLength: 30
+                        example: "500041"
+                      country:
+                        type: string
+                        required: true
+                        minLength: 1
+                        maxLength: 30
+                        example: "India"
+  health-check-response:
+    type: object
+    properties:
+              status:
+                type: string
+                required: true
+                example: "Up"

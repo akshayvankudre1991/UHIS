@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_8e0e31c4_840c_406c_8690_770367a937a7_Input_Variables_errorDescription = String | Null
+

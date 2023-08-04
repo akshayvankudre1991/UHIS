@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<sub-flow name="get-covid-reports-sub-flow" doc:id="4cb51844-fa4b-422e-b7d2-36d9dfc4ac5f" >
+		<logger level="DEBUG" doc:name="Start Log" doc:id="0dbeda34-c87a-4095-a8c6-f6e2382a481a" message="Before get covid reports DB call"/>
+		<db:select doc:name="Select Covid Reports" doc:id="d5c1cd2f-3b65-4b5c-9aa5-9326b6091148" config-ref="Database_Config">
+			<db:sql><![CDATA[#["$(vars.dynamicQuery)"]]]></db:sql>
+		</db:select>
+		<logger level="DEBUG" doc:name="End Log" doc:id="cf8c81be-aaf2-4ed3-8a7d-d8d094ac49f9" message="After get covid reports DB call"/>
+	</sub-flow>
+	<sub-flow name="get-covid-case-by-national-id-sub-flow" doc:id="6bfc275b-7084-4c89-bf4e-1c6fc9c678ea" >
+		<logger level="DEBUG" doc:name="Start Log" doc:id="c1c4711a-0eff-4473-9b91-82e3bc536107" message="Before get covid case by national id DB call" />
+		<db:select doc:name="Select Covid Case By National Id DB" doc:id="52746c0e-5fa5-4694-a5a9-c876334823db" config-ref="Database_Config">
+			<db:sql><![CDATA[select case_id, source, case_type, first_name, last_name, phone, email, date_of_birth, national_id, national_id_type, street_address, city, state, postal, country, create_date, update_date, create_by, update_by from cvd_case_master1122 where national_id=:national_id]]></db:sql>
+			<db:input-parameters><![CDATA[#[{
+	national_id: vars.nationalId
+}]]]></db:input-parameters>
+		</db:select>
+		<logger level="DEBUG" doc:name="End Log" doc:id="86945f33-a14a-44cc-be2e-de66efcaf5c4" message="After get covid case by national id DB call" />
+	</sub-flow>
+	<sub-flow name="update-covid-case-sub-flow" doc:id="80dc149a-15ab-4b3a-81b0-654733a39a1d" >
+		<logger level="DEBUG" doc:name="Start Log" doc:id="0735c689-e749-435e-a9c2-ca2fdc37d603" message="Before update covid case DB call" />
+		<db:update doc:name="Update Covid Case DB Call" doc:id="68d95833-d581-437c-9dba-099b2c3eb51d" config-ref="Database_Config">
+			<db:sql ><![CDATA[update cvd_case_master1122 set source=:source, case_type=:case_type, first_name=:first_name, last_name=:last_name, phone=:phone, email=:email, date_of_birth=TO_DATE(:date_of_birth, 'YYYY-MM-DD'), national_id=:national_id, national_id_type=:national_id_type, street_address=:street_address, city=:city, state=:state, postal=:postal, country=:country, update_date=TO_DATE(:update_date, 'YYYY-MM-DD'), create_by=:create_by, update_by=:update_by where case_id=:case_id]]></db:sql>
+			<db:input-parameters ><![CDATA[#[vars.covidCasePayload]]]></db:input-parameters>
+		</db:update>
+		<logger level="DEBUG" doc:name="End Log" doc:id="7aeec22e-0e98-47f6-b5fb-e5df640c32b2" message="After update covid case DB call" />
+	</sub-flow>
+	<sub-flow name="register-covid-case-sub-flow" doc:id="5c78a6a6-8405-4f27-997b-e3d0203b6872" >
+		<logger level="DEBUG" doc:name="Start Log" doc:id="41bdfa88-a40c-4781-9d24-520324a566e0" message="Before register covid case DB call" />
+		<db:stored-procedure doc:name="Stored Procedure Register Covid Case Call" doc:id="fc26f715-cca8-4fdf-aa46-14d2a1b41472" config-ref="Database_Config">
+			<db:sql><![CDATA[{call insert_covid_master1122(:source, :case_type, :first_name, :last_name, :phone, :email, :date_of_birth, :national_id, :national_id_type, :street_address, :city, :state, :postal, :country, :create_date, :update_date, :create_by, :update_by, :case_id)}]]></db:sql>
+			<db:input-parameters><![CDATA[#[vars.covidCasePayload]]]></db:input-parameters>
+			<db:output-parameters>
+				<db:output-parameter key="case_id" type="INTEGER" />
+			</db:output-parameters>
+		</db:stored-procedure>
+		<logger level="DEBUG" doc:name="End Log" doc:id="767698d7-c3ea-42d1-8cc5-9d9f097463a4" message="After register covid case DB call" />
+	</sub-flow>
+</mule>

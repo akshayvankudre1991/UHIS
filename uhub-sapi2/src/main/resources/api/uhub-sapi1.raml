@@ -1,0 +1,118 @@
+#%RAML 1.0
+title: uhub-sapi1
+baseUri: http://localhost:8081/covid/v1
+traits:
+  correlation-id-header: !include /exchange_modules/39f25b58-391c-4d0f-ba06-1f68ca6176f7/x-correlation-id-header/1.0.0/x-correlation-id-header.raml
+  transaction-id-header: !include /exchange_modules/39f25b58-391c-4d0f-ba06-1f68ca6176f7/x-transaction-id-header/1.0.0/x-transaction-id-header.raml
+  covid-reports-queryParam: !include /traits/covid-reports-query-param.raml
+uses:
+  uhub-sapi-datatypes: uhub-sapi-datatypes-library/uhub-sapi-data-types-library.raml
+  uho-common-datatypes-library: /exchange_modules/39f25b58-391c-4d0f-ba06-1f68ca6176f7/uho-common-datatypes-library/1.0.0/uho-common-datatypes-library.raml
+/cases:
+  post:
+    is: [correlation-id-header,transaction-id-header]
+    body:
+      application/json:
+        type: uhub-sapi-datatypes.register-covid-case-request
+        example: !include /examples/register-covid-case-request-payload.json        
+    responses:
+      201:
+        body:
+          application/json:
+            type: uhub-sapi-datatypes.register-covid-case-response
+            example: !include /examples/register-covid-case-response-payload.json
+      400:
+        body:
+          application/json:
+            type: uho-common-datatypes-library.uho-common-datatypes-library-json
+            example: !include /examples/400.json
+      503:
+        body:
+          application/json:
+            type: uho-common-datatypes-library.uho-common-datatypes-library-json
+            example: !include /examples/503.json
+      500:
+        body:
+          application/json:
+            type: uho-common-datatypes-library.uho-common-datatypes-library-json
+            example: !include /examples/500.json
+  put:
+    is: [correlation-id-header,transaction-id-header]
+    body:
+      application/xml:
+        type: uhub-sapi-datatypes.update-covid-case-request
+        example: !include /examples/update-covid-case-request-payload.xml
+    responses:
+      200:
+        body:
+          application/xml:
+            type: uhub-sapi-datatypes.update-covid-case-response
+            example: !include /examples/update-covid-case-response-payload.xml
+      400:
+        body:
+          application/xml:
+            type: uho-common-datatypes-library.uho-common-datatypes-library-xml
+            example: !include /examples/400.xml
+              
+      503:
+        body:
+          application/xml:
+            type: uho-common-datatypes-library.uho-common-datatypes-library-xml
+            example: !include examples/503.xml
+              
+      500:
+        body:
+          application/xml:
+            type: uho-common-datatypes-library.uho-common-datatypes-library-xml
+            example: !include examples/500.xml
+  /{nationalId}:
+    get:
+      is: [correlation-id-header,transaction-id-header]
+      responses:
+        200:
+          body:
+            application/json:
+              type: uhub-sapi-datatypes.get-covid-case-by-national-id-response
+              example: !include /examples/get-covid-case-by-national-id-response-payload.json  
+        404:
+          body:
+            application/json:
+              type: uho-common-datatypes-library.uho-common-datatypes-library-json
+              example: !include /examples/404.json
+        503:
+          body:
+            application/json:
+              type: uho-common-datatypes-library.uho-common-datatypes-library-json
+              example: !include examples/503.json
+        500:
+          body:
+            application/json:
+              type: uho-common-datatypes-library.uho-common-datatypes-library-json
+              example: !include examples/500.json
+/reports:
+  get:
+    is: [correlation-id-header,transaction-id-header,covid-reports-queryParam]
+    responses:
+      200:
+        body:
+            application/json:
+              type: uhub-sapi-datatypes.get-covid-reports-response
+              example: !include /examples/get-covid-reports-payload.json
+      503:
+        body:
+            application/json:
+              type: uho-common-datatypes-library.uho-common-datatypes-library-json
+              example: !include examples/503.json
+      500:
+        body:
+            application/json:
+              type: uho-common-datatypes-library.uho-common-datatypes-library-json
+              example: !include examples/500.json
+/health-check:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: uhub-sapi-datatypes.health-check-response
+            example: !include /examples/health-check-response-payload.json

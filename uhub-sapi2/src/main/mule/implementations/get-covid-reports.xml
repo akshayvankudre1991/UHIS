@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<flow name="get:\reports:uhub-sapi1-config">
+		<ee:transform doc:name="Set Correlation Id And Input Payload" doc:id="01aa940c-2758-42d5-a2be-1e1d839791a2" >
+			<ee:message />
+			<ee:variables >
+				<ee:set-variable variableName="correlationId" ><![CDATA[%dw 2.0
+output application/java
+---
+attributes.headers.'x-correlation-id' default ""]]></ee:set-variable>
+				<ee:set-variable variableName="inputPayload" ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="Start Log" doc:id="047d02b7-9bff-4df9-b49a-0dcd8164a388" message="transactionId: #[vars.transactionId], correlationId: #[vars.correlationId], The flow to get covid reports started: #[vars.inputPayload]" />
+		<ee:transform doc:name="Prepare Dynamic Query" doc:id="2328bef8-ee2c-405f-9537-a1e0fc2fb531" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="dynamicQuery" ><![CDATA[if(!isEmpty(attributes.queryParams.state))(
+	"select * from cvd_case_master1122 where state='" ++ attributes.queryParams.state ++ "'"
+) else(
+	"select * from cvd_case_master1122"
+)]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="get-covid-reports-sub-flow" doc:id="c003d0ea-b11c-4a6e-bae2-33993872205b" name="get-covid-reports-sub-flow" />
+		<ee:transform doc:name="Set Success Response" doc:id="bb5d85e5-775b-4167-b65b-07c68c03a399">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload map(v,i) -> {
+	source: v.source,
+	caseType: v.case_type,
+	firstName: v.first_name,
+	lastName: v.last_name,
+	phone: v.phone,
+	email: v.email,
+	dateOfBirth: v.date_of_birth,
+	nationalId: v.national_id,
+	nationalIdType: v.national_id_type,
+	address: {
+		streetAddress: v.street_address,
+		city: v.city,
+		state: v.state,
+		postal: v.postal,
+		country: v.country
+	},
+	createDate: v.create_date,
+	updateDate: v.update_date,
+	createBy: v.create_by,
+	updateBy: v.update_by
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End Log" doc:id="51c21e83-5ad5-4660-8255-7d808e170ecf" message="transactionId: #[vars.transactionId], correlationId: #[vars.correlationId], The flow to get covid reports completed: #[vars.inputPayload]" />
+    
+</flow>
+	
+</mule>

@@ -1,0 +1,41 @@
+#%RAML 1.0 Library
+usage: uho common datatypes
+types:
+  uho-common-datatypes-library-json:
+    type: object
+    properties:
+              code:
+                type: number
+                required: true
+              message:
+                type: string
+                required: true
+              description:
+                type: string
+                required: true
+              dateTime:
+                type: string
+                required: true
+              transactionId:
+                type: string
+                required: true
+  uho-common-datatypes-library-xml:
+    type: object
+    xml:
+              name: response
+    properties:
+              code:
+                type: number
+                required: true
+              message:
+                type: string
+                required: true
+              description:
+                type: string
+                required: true
+              dateTime:
+                type: string
+                required: true
+              transactionId:
+                type: string
+                required: true
